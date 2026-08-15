@@ -1,34 +1,32 @@
 # Azyoon
 
-Repositório oficial para distribuição de instaladores e atualizações do **Azyoon**.
+Repositório oficial de distribuição e atualização do **Azyoon**.
 
-O Azyoon é uma plataforma de comunicação com servidores, canais, mensagens, chamadas de voz e vídeo e compartilhamento de tela.
+O Azyoon é uma plataforma de comunicação para comunidades, com servidores, canais, mensagens, chamadas de voz e vídeo e compartilhamento de tela.
 
 ## Download
 
-Baixe a versão mais recente na seção **Releases** deste repositório.
+A versão mais recente está disponível em **[Releases](../../releases/latest)**.
 
 Para uso normal, utilize o instalador oficial para Windows.
 
 ## Atualizações
 
-Este repositório também é utilizado pelo sistema de atualização automática do Azyoon.
+Este repositório é utilizado pelo sistema de atualização automática do Azyoon e pode conter:
 
-Os Releases podem incluir:
-
-* Instaladores
+* Instaladores oficiais
 * Bundles de atualização
 * Assinaturas
 * Checksums
-* Builds experimentais para testes
+* Builds experimentais
 
-## Portable Experimental
+## Builds experimentais
 
-O arquivo `portable-experimental` é destinado a testes manuais e pode não ter o mesmo comportamento da instalação oficial.
+Arquivos identificados como `portable-experimental` são destinados a testes e podem não oferecer o mesmo comportamento ou estabilidade da versão instalada.
 
-Para uso normal, prefira o instalador.
+Para uso diário, utilize o instalador oficial.
 
 ## Links
 
-**Site oficial:** https://azyoon.site
-**Desenvolvedor:** 1blayze
+**Site oficial:** [azyoon.site](https://azyoon.site)
+**Desenvolvedor:** [1blayze](https://github.com/1blayze)
