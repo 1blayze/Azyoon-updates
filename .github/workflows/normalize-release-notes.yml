@@ -1,0 +1,151 @@
+name: Normalize release notes
+
+on:
+  push:
+    paths:
+      - .github/workflows/normalize-release-notes.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-release-notes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update release notes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const notes = {
+              'v1.0.14': `# Azyoon 1.0.14
+
+## Melhorias
+
+- Torna as atualizações do Azyoon mais seguras e confiáveis.
+- Corrige falhas que poderiam impedir a validação correta de uma atualização.
+- Mantém os dados e configurações do usuário durante a atualização do aplicativo.`,
+
+              'v1.0.13': `# Azyoon 1.0.13
+
+## Melhorias
+
+- Simplifica a instalação e a desinstalação do Azyoon no Windows.
+- Preserva os dados do usuário ao atualizar ou reinstalar o aplicativo.
+- Melhora a confiabilidade do processo de atualização e inclui correções gerais de estabilidade.`,
+
+              'v1.0.12': `# Azyoon 1.0.12
+
+## Correções e melhorias
+
+- Corrige um problema que poderia impedir o Azyoon de concluir a conexão durante a inicialização.
+- Melhora o comportamento do aplicativo durante instabilidades de rede.
+- Torna o login e a inicialização mais confiáveis.
+- Inclui correções gerais de estabilidade.`,
+
+              'v1.0.11': `# Azyoon 1.0.11
+
+## Chamadas e interface
+
+- Melhora os estados visuais das chamadas, incluindo avatar, indicador de fala, grade de vídeo e compartilhamento de tela.
+- Aprimora a clareza da voz e reduz ruídos transitórios durante as chamadas.
+- Corrige indicadores de notificações, pedidos de amizade, avatares padrão e alinhamentos da interface.
+- Melhora a confiabilidade do login, da conexão e das configurações do aplicativo.`,
+
+              'v1.0.10': `# Azyoon 1.0.10
+
+## Correções e melhorias
+
+- Corrige problemas de conexão que poderiam afetar a versão instalada do Azyoon.
+- Corrige conversas vazias que podiam permanecer presas na tela de carregamento.
+- Adiciona automaticamente novos amigos à área de mensagens diretas.
+- Melhora a consistência visual de pedidos, ações e contadores de notificação.`,
+
+              'v1.0.9': `# Azyoon 1.0.9
+
+## Perfil e autenticação
+
+- Melhora a segurança e a confiabilidade dos fluxos de autenticação.
+- Corrige problemas ao remover ou atualizar avatar e banner.
+- Simplifica a edição do perfil, permitindo trocar avatar e banner diretamente pela prévia.
+- Refina o tema escuro, a navegação das configurações e os estados visuais dos controles.
+- Melhora o fluxo de adicionar amigos e a responsividade das telas de acesso.`,
+
+              'v1.0.8': `# Azyoon 1.0.8
+
+## Conta, perfil e jogos
+
+- Adiciona um fluxo de login pelo navegador no Windows para tornar a autenticação mais segura e confiável.
+- Melhora login, cadastro, confirmação de e-mail e reenvio de códigos.
+- Corrige a exibição circular dos avatares e melhora o recorte de GIFs com zoom e arraste.
+- Aprimora a adição manual de jogos e a apresentação dessa experiência dentro do aplicativo.
+- Melhora o contador de tempo jogado e a detecção de jogos ativos ou minimizados.
+- Inclui refinamentos visuais nas configurações.`,
+
+              'v1.0.7': `# Azyoon 1.0.7
+
+## Conversas, chamadas e perfil
+
+- Melhora o carregamento, a rolagem inicial e a estabilidade visual de mensagens e imagens nas conversas.
+- Aprimora chamadas, compartilhamento de tela, captura de tela e reprodução de áudio no Windows.
+- Adiciona insígnias de perfil e refina temas, perfis, lista de amigos, ícones e estados de salvamento.
+- Melhora a entrega e visualização de mídias, a presença dos usuários e a sincronização entre dispositivos.`,
+
+              'v1.0.6': `# Azyoon 1.0.6
+
+## Correções e melhorias
+
+- Corrige o indicador de mensagens não lidas para manter o estado correto após abrir a conversa e reiniciar o aplicativo.
+- Remove um carregamento duplicado durante a inicialização.
+- Corrige um problema que poderia fechar o aplicativo ao recarregar a interface.
+- Melhora a captura de tela em jogos e aplicativos em tela cheia, além de aprimorar links, mídias e chamadas.`,
+
+              'v1.0.5': `# Azyoon 1.0.5
+
+## Chamadas e compartilhamento de tela
+
+- Reformula as chamadas de voz e o compartilhamento de tela com layouts responsivos, prévias, foco na transmissão e suporte a tela cheia.
+- Melhora a estabilidade e a fluidez do compartilhamento de tela, incluindo o áudio do sistema.
+- Melhora a atualização e sincronização de avatares e outras mídias.
+- Aprimora conversas, envio de anexos, pré-visualização de mídias, presença e ordenação das mensagens.
+- Simplifica alguns fluxos de perfil e chamadas e melhora a estabilidade geral do aplicativo.`,
+
+              'v1.0.4': `# Azyoon 1.0.4
+
+## Conversas em grupo
+
+- Corrige um problema na inicialização automática do Azyoon no Windows.
+- Adiciona conversas em grupo com lista de membros, avatar do grupo, edição de nome e avatar e identificação do proprietário.
+- Corrige convites para grupos privados e a atualização da conversa em tempo real.
+- Melhora a exibição de usuários em conversas, perfis e listas de membros.`,
+
+              'v1.0.3': `# Azyoon 1.0.3
+
+## Atualizações
+
+- Corrige o sistema de atualização do Azyoon.
+- Adiciona instalação direta de novas versões pelo aviso de atualização.
+- Exibe a versão atual do aplicativo no rodapé das configurações.`
+            };
+
+            const releases = await github.paginate(github.rest.repos.listReleases, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+
+            for (const release of releases) {
+              const body = notes[release.tag_name];
+              if (!body) {
+                core.info(`Sem texto definido para ${release.tag_name}; mantendo a release atual.`);
+                continue;
+              }
+
+              await github.rest.repos.updateRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.id,
+                body,
+              });
+
+              core.info(`Notas atualizadas: ${release.tag_name}`);
+            }
